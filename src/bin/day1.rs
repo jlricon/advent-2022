@@ -3,7 +3,7 @@ use std::num::ParseIntError;
 fn get_calories_per_elf(input: &str) -> Result<Vec<u32>, ParseIntError> {
     input
         .split("\n\n")
-        .map(|elf_food| elf_food.split("\n").map(|line| line.parse::<u32>()).sum())
+        .map(|elf_food| elf_food.split('\n').map(|line| line.parse::<u32>()).sum())
         .collect()
 }
 fn part1(input: &str) -> Result<u32, ParseIntError> {

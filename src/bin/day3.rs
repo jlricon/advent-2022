@@ -28,9 +28,7 @@ impl RuckSack {
     fn find_common_element_priority_in_both_halves(&self) -> u32 {
         // Find the element that is present in first_half and second_half
         self.first_half
-            .iter()
-            .filter(|item| self.second_half.contains(item))
-            .nth(0)
+            .iter().find(|item| self.second_half.contains(item))
             .unwrap()
             .priority()
     }
@@ -48,8 +46,8 @@ impl RuckSack {
 }
 fn part1(input: &str) -> u32 {
     let rucksacks = input
-        .split("\n")
-        .map(|items| RuckSack::new(items))
+        .split('\n')
+        .map(RuckSack::new)
         .collect::<Vec<RuckSack>>();
     rucksacks
         .iter()
@@ -58,8 +56,8 @@ fn part1(input: &str) -> u32 {
 }
 fn part2(input: &str) -> u32 {
     let elf_groups = input
-        .split("\n")
-        .map(|items| RuckSack::new(items))
+        .split('\n')
+        .map(RuckSack::new)
         .chunks(3)
         .into_iter()
         .map(|mut group| {
@@ -77,12 +75,11 @@ fn part2(input: &str) -> u32 {
                     } else {
                         None
                     }
-                })
-                .nth(0)
+                }).next()
                 .unwrap()
         })
         .sum();
-    return elf_groups;
+    elf_groups
 }
 fn main() {
     let input = include_str!("../../data/day3.txt");

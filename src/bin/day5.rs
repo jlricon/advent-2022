@@ -6,7 +6,7 @@ struct Move {
     number: usize,
 }
 fn parse_box_stack(input: &str) -> Stacks {
-    let mut lines = input.split("\n").collect::<Vec<&str>>();
+    let mut lines = input.split('\n').collect::<Vec<&str>>();
 
     let n_stacks = lines
         .pop()
@@ -16,7 +16,7 @@ fn parse_box_stack(input: &str) -> Stacks {
         .unwrap()
         .trim_end()
         .chars()
-        .nth(0)
+        .next()
         .unwrap()
         .to_digit(10)
         .unwrap() as usize;
@@ -29,7 +29,7 @@ fn parse_box_stack(input: &str) -> Stacks {
     }
     lines.iter().for_each(|line| {
         (0..n_stacks).for_each(|pos| {
-            let candidate = line.chars().skip(pos * 4 + 1).nth(0).unwrap();
+            let candidate = line.chars().nth(pos * 4 + 1).unwrap();
 
             if candidate.is_ascii_uppercase() {
                 res[pos].push(candidate);
@@ -37,15 +37,27 @@ fn parse_box_stack(input: &str) -> Stacks {
         });
     });
     res.iter_mut().for_each(|v| v.reverse());
-    return res;
+    res
 }
 fn part1(inp: &Stacks, moves: &Vec<Move>) -> String {
     let mut stacks = inp.clone();
     moves.iter().for_each(|m| {
-        for _ in (0..m.number) {
+        for _ in 0..m.number {
             let popped = stacks[m.from - 1].pop().unwrap();
             stacks[m.to - 1].push(popped);
         }
+    });
+    stacks.iter().map(|v| v.last().unwrap()).collect()
+}
+fn part2(inp: &Stacks, moves: &Vec<Move>) -> String {
+    let mut stacks = inp.clone();
+    moves.iter().for_each(|m| {
+        let mut popped = Vec::new();
+        for _ in 0..m.number {
+            popped.push(stacks[m.from - 1].pop().unwrap());
+        }
+        popped.reverse();
+        stacks[m.to - 1].append(&mut popped);
     });
     stacks.iter().map(|v| v.last().unwrap()).collect()
 }
@@ -55,7 +67,7 @@ fn main() {
         .collect::<Vec<&str>>();
     let stacks = parse_box_stack(input[0]);
     let moves: Vec<Move> = input[1]
-        .split("\n")
+        .split('\n')
         .map(|line| {
             let part1 = line.split("move ").nth(1).unwrap();
             let part1 = part1.split(" from ").collect::<Vec<&str>>();
@@ -68,5 +80,5 @@ fn main() {
         .collect();
 
     dbg!(part1(&stacks, &moves));
-    // dbg!(part2(input).unwrap());
+    dbg!(part2(&stacks, &moves));
 }
