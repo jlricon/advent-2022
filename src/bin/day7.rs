@@ -1,9 +1,6 @@
 use itertools::*;
 use std::collections::HashMap;
-enum Node {
-    File(usize),
-    Dir(HashMap<String, Node>),
-}
+
 fn directory_sizes(files: &HashMap<String, usize>) -> HashMap<String, usize> {
     let mut directories = HashMap::new();
 
@@ -14,7 +11,7 @@ fn directory_sizes(files: &HashMap<String, usize>) -> HashMap<String, usize> {
 
         // Keep track of the current directory path and total size
         let mut cur_path = vec![];
-        let mut cur_size = *file_size;
+        let cur_size = *file_size;
 
         // Loop through each directory component
         for (i, component) in dir_path.iter().enumerate() {
@@ -39,7 +36,7 @@ fn directory_sizes(files: &HashMap<String, usize>) -> HashMap<String, usize> {
 
 fn main() {
     let input = include_str!("../../data/day7.txt")
-        .split("\n")
+        .split('\n')
         .skip(1)
         .collect::<Vec<&str>>();
     let mut tree = HashMap::new();
@@ -49,14 +46,12 @@ fn main() {
             current_address.pop();
         } else if line.starts_with("$ cd") {
             current_address.push(line.split("$ cd ").nth(1).unwrap());
-        } else if line.starts_with("$ ls") {
-            continue;
-        } else if line.starts_with("dir") {
+        } else if line.starts_with("$ ls") | line.starts_with("dir") {
             continue;
         } else {
             // We have a file with some length
-            let size = line.split(" ").nth(0).unwrap().parse::<usize>().unwrap();
-            let file_name = line.split(" ").nth(1).unwrap();
+            let size = line.split(' ').next().unwrap().parse::<usize>().unwrap();
+            let file_name = line.split(' ').nth(1).unwrap();
             let path = current_address.join("/") + "/" + file_name;
             tree.insert(path, size);
         }
@@ -74,8 +69,7 @@ fn main() {
     let dir_clear_space = dir_sizes
         .values()
         .sorted()
-        .skip_while(|f| **f < space_to_free)
-        .next()
+        .find(|f| **f >= space_to_free)
         .unwrap();
     dbg!(dir_clear_space);
 }

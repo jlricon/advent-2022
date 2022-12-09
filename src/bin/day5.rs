@@ -39,7 +39,7 @@ fn parse_box_stack(input: &str) -> Stacks {
     res.iter_mut().for_each(|v| v.reverse());
     res
 }
-fn part1(inp: &Stacks, moves: &Vec<Move>) -> String {
+fn part1(inp: &Stacks, moves: &[Move]) -> String {
     let mut stacks = inp.clone();
     moves.iter().for_each(|m| {
         for _ in 0..m.number {
@@ -49,7 +49,7 @@ fn part1(inp: &Stacks, moves: &Vec<Move>) -> String {
     });
     stacks.iter().map(|v| v.last().unwrap()).collect()
 }
-fn part2(inp: &Stacks, moves: &Vec<Move>) -> String {
+fn part2(inp: &Stacks, moves: &[Move]) -> String {
     let mut stacks = inp.clone();
     moves.iter().for_each(|m| {
         let mut popped = Vec::new();
