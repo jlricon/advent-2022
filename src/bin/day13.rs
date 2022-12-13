@@ -12,7 +12,7 @@ impl Ord for Element {
         match (self, other) {
             (Element::Num(a), Element::Num(b)) => a.cmp(b),
             (Element::List(_), Element::Num(_)) => self.cmp(&Element::List(vec![other.clone()])),
-            (Element::Num(_), Element::List(_)) => (&Element::List(vec![self.clone()])).cmp(other),
+            (Element::Num(_), Element::List(_)) => Element::List(vec![self.clone()]).cmp(other),
             (Element::List(a), Element::List(b)) => a.cmp(b),
         }
     }
@@ -116,7 +116,7 @@ fn main() {
     let input: Vec<(Element, Element)> = include_str!("../../data/day13.txt")
         .split("\n\n")
         .map(|l| {
-            let mut lines = l.split("\n");
+            let mut lines = l.split('\n');
             let first = parse_element(lines.next().unwrap());
             let second = parse_element(lines.next().unwrap());
 
@@ -124,7 +124,7 @@ fn main() {
         })
         .collect();
 
-    // part1(input);
+    part1(input.clone());
     part2(input);
 }
 // Test with [[1],[2,3,4]]

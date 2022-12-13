@@ -68,7 +68,7 @@ impl Monkey {
     }
 }
 fn part1(monkeys: Vec<Monkey>) {
-    let mut monkeys = monkeys.clone();
+    let mut monkeys = monkeys;
     for _ in 0..20 {
         for monkey in 0..monkeys.len() {
             let result = monkeys[monkey].inspect_items();
@@ -90,7 +90,7 @@ fn part1(monkeys: Vec<Monkey>) {
     dbg!(res);
 }
 fn part2(monkeys: Vec<Monkey>) {
-    let mut monkeys = monkeys.clone();
+    let mut monkeys = monkeys;
     let common_divisor: usize = monkeys.iter().map(|m| m.test.divisible).product();
     for round in 0..10_000 {
         for monkey in 0..monkeys.len() {
@@ -116,10 +116,10 @@ fn main() {
     let input: Vec<Monkey> = include_str!("../../data/day11.txt")
         .split("\n\n")
         .map(|m| {
-            let mut lines = m.split("\n");
+            let mut lines = m.split('\n');
             let _monkey = lines.next().unwrap();
             let number_string = lines.next().unwrap().split(": ").last().unwrap();
-            let starting_numbers = if number_string.contains(",") {
+            let starting_numbers = if number_string.contains(',') {
                 number_string
                     .split(", ")
                     .map(|m| m.parse::<usize>().unwrap())
@@ -133,7 +133,7 @@ fn main() {
                 .split("new = old ")
                 .last()
                 .unwrap()
-                .split(" ")
+                .split(' ')
                 .collect();
 
             let operation = match (operation[0], operation[1]) {
@@ -180,7 +180,7 @@ fn main() {
         })
         .collect();
 
-    // part1(input);
+    part1(input.clone());
 
     part2(input);
 }
