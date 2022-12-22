@@ -189,32 +189,36 @@ fn main() {
         .chars()
         .map(|c| JetDirection::from_char(c))
         .collect();
-    let mut map = Map::new(input.clone());
-    // Part 1
-    let mut pattern = 0;
-    const N_ROCKS: usize = 1000000000000;
-    // for i in 0..N_ROCKS {
-    //     let rock = map.add_rock();
-    //     // Check if the last rock is in the right position
-    //     if map.map.contains_key(&(3, map.height))
-    //         & map.map.contains_key(&(2, map.height))
-    //         & map.map.contains_key(&(4, map.height))
-    //         & map.map.contains_key(&(5, map.height))
-    //         & (rock == Rock::Bar)
-    //     {
-    //         // println!(
-    //         //     "Found it! Height of block: {}. Diff: {} at iteration {}",
-    //         //     map.height,
-    //         //     map.height - pattern,
-    //         //     i
-    //         // );
-    //         pattern = map.height;
-    //     }
-    // }
-    // Part 2
-    // We assume there is a pattern every N rocks, then we need to simulate that
-    println!("Height: {}", map.height);
 
+    fn loop_for_rocks(input: &Vec<JetDirection>, n_rocks: usize) -> i64 {
+        let mut map = Map::new(input.clone());
+        let mut pattern = 0;
+
+        for i in 0..n_rocks {
+            let rock = map.add_rock();
+            // Check if the last rock is in the right position
+            if map.map.contains_key(&(3, map.height))
+                & map.map.contains_key(&(2, map.height))
+                & map.map.contains_key(&(4, map.height))
+                & map.map.contains_key(&(5, map.height))
+                & (rock == Rock::Bar)
+            {
+                println!(
+                    "Found it! Height of block: {}. Diff: {} at iteration {}",
+                    map.height,
+                    map.height - pattern,
+                    i
+                );
+                pattern = map.height;
+            }
+        }
+        return map.height;
+    }
+    // Part 1
+    dbg!(loop_for_rocks(&input, 2022));
+    // Part 2
+
+    const N_ROCKS: usize = 1000000000;
     // Get the height of a block
     // Empirically, we know block starts at 220
     const BLOCK_START: usize = 220;
